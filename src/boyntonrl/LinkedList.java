@@ -75,13 +75,12 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public int size() {
-        int size = 0;
-        Node<E> walker = head;
-        while(walker!=null) {
-            ++size;
-            walker = walker.next;
-        }
-        return size;
+        return size(head);
+    }
+
+    private int size(Node<E> head) {
+        // TODO
+        return 0;
     }
 
     /**
@@ -94,13 +93,12 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public boolean contains(Object target) {
-        Node<E> walker = head;
-        boolean found = false;
-        while(walker!=null && !found) {
-            found = target==null ? walker.value==null : target.equals(walker.value);
-            walker = walker.next;
-        }
-        return found;
+        return contains(target, head);
+    }
+
+    private boolean contains(Object target, Node<E> head) {
+        // TODO
+        return false;
     }
 
     /**
@@ -116,17 +114,12 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public int indexOf(Object target) {
-        Node<E> walker = head;
-        int index = -1;
-        int counter = 0;
-        while(walker!=null && index==-1) {
-            if(target==null ? walker.value==null : target.equals(walker.value)) {
-                index = counter;
-            }
-            ++counter;
-            walker = walker.next;
-        }
-        return index;
+        return indexOf(target, head);
+    }
+
+    private int indexOf(Object target, Node<E> head) {
+        // TODO
+        return 0;
     }
 
     /**
@@ -142,14 +135,15 @@ public class LinkedList<E> implements List<E> {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
         }
         try {
-            Node<E> walker = head;
-            for(int i=0; i<index; ++i) {
-                walker = walker.next;
-            }
-            return walker.value;
+            return get(index, head);
         } catch(NullPointerException e) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
         }
+    }
+
+    private E get(int index, Node<E> head) {
+        // TODO
+        return null;
     }
 
     @Override

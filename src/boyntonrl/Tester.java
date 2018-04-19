@@ -7,6 +7,7 @@
  */
 package boyntonrl;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,12 +22,14 @@ public class Tester {
     private final static String[] STRINGS3 = {"this", "will", "be"};
     private final static String[] STRINGS4 = {"this", "will", "be", "interesting"};
     private final static String[] STRINGS5 = {"this", null, "will", "be", "interesting"};
+    private final static String[] RANDOM_STRINGS = {"foo", "bar"};
 
     private final static int[] EMPTY_INTS = {};
     private final static int[] INTS1 = {-1};
     private final static int[] INTS2 = {-1, 2};
     private final static int[] INTS3 = {-1, 2, 8};
     private final static int[] INTS4 = {-1, 2, 8, Integer.MAX_VALUE};
+    private final static int[] RANDOM_INTS = {Integer.MIN_VALUE, 13, 7};
 
     /**
      * Calls all of the test methods
@@ -47,6 +50,71 @@ public class Tester {
         test(description + 2, intConstructor(INTS2));
         test(description + 3, intConstructor(INTS3));
         test(description + 4, intConstructor(INTS4));
+
+        description = "ArrayList contains collection of String of size: ";
+        test(description + 0, arrayListContains(EMPTY_STRINGS));
+        test(description + 1, arrayListContains(STRINGS1));
+        test(description + 2, arrayListContains(STRINGS2));
+        test(description + 3, arrayListContains(STRINGS3));
+        test(description + 4, arrayListContains(STRINGS4));
+        test(description + 5, arrayListContains(STRINGS5));
+
+        description = "ArrayList contains collection of Integers of size: ";
+        test(description + 0, arrayListContains(EMPTY_INTS));
+        test(description + 1, arrayListContains(INTS1));
+        test(description + 2, arrayListContains(INTS2));
+        test(description + 3, arrayListContains(INTS3));
+        test(description + 4, arrayListContains(INTS4));
+
+        description = "LinkedList contains collection of String of size: ";
+        test(description + 0, arrayListContains(EMPTY_STRINGS));
+        test(description + 1, arrayListContains(STRINGS1));
+        test(description + 2, arrayListContains(STRINGS2));
+        test(description + 3, arrayListContains(STRINGS3));
+        test(description + 4, arrayListContains(STRINGS4));
+        test(description + 5, arrayListContains(STRINGS5));
+
+    }
+
+    /**
+     * Tests if the ArrayList contains() method contains each word in the list and
+     * doesnt contain random stuff not in the list.
+     * Assumes size() and get() work properly.
+     * @param strings string array to construct ArrayList
+     * @return true if the test passed, false if it failed
+     */
+    private static boolean arrayListContains(String[] strings) {
+        boolean passed = true;
+        Collection<String> util = new java.util.ArrayList<>(Arrays.asList(strings));
+        List<String> myList = new ArrayList<>(util);
+        for (int i = 0; i < myList.size() && passed; i++) {
+            if (!myList.contains(myList.get(i))) {
+                passed = false;
+            }
+        }
+        for (String randomString : RANDOM_STRINGS) {
+            if (myList.contains(randomString)) {
+                passed = false;
+            }
+        }
+        return passed;
+    }
+
+    private static boolean arrayListContains(int[] ints) {
+        boolean passed = true;
+        Collection<Integer> util = new java.util.ArrayList<>(Arrays.asList(ints));
+        List<Integer> myList = new ArrayList<>(util);
+        for (int i = 0; i < myList.size() && passed; i++) {
+            if (!myList.contains(myList.get(i))) {
+                passed = false;
+            }
+        }
+        for (int randomInt : RANDOM_INTS) {
+            if (myList.contains(randomInt)) {
+                passed = false;
+            }
+        }
+        return passed;
     }
 
     /**

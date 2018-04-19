@@ -56,11 +56,8 @@ public class ArrayList<E> implements List<E>, RandomAccess {
      */
     @Override
     public boolean contains(Object target) {
-        boolean found = false;
-        for(int i=0; !found && i<size(); ++i) {
-            found = target==null ? data[i]==null : target.equals(data[i]);
-        }
-        return found;
+        // TODO
+        return false;
     }
 
     /**
@@ -76,13 +73,12 @@ public class ArrayList<E> implements List<E>, RandomAccess {
      */
     @Override
     public int indexOf(Object target) {
-        int index = -1;
-        for(int i=0; index==-1 && i<size(); ++i) {
-            if((target==null ? data[i]==null : target.equals(data[i]))) {
-                index = i;
-            }
-        }
-        return index;
+        // TODO call recursive
+        return indexOf(target, data[0]);
+    }
+
+    private int indexOf(Object target, Object value) {
+        return 0;
     }
 
     @Override
@@ -97,7 +93,7 @@ public class ArrayList<E> implements List<E>, RandomAccess {
 
     @Override
     public E get(int index) {
-        throw new UnsupportedOperationException("Not implemented");
+        return (E) data[index];
     }
 
     @Override
