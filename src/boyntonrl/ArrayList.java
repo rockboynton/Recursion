@@ -56,8 +56,25 @@ public class ArrayList<E> implements List<E>, RandomAccess {
      */
     @Override
     public boolean contains(Object target) {
-        // TODO
-        return false;
+        return contains(target, 0);
+    }
+
+    private boolean contains(Object target, int position) {
+        boolean found = false;
+        if (position < data.length) {
+            if (target == null) {
+                if (!(data[position] == null)) {
+                    found = contains(target, position + 1);
+                } else {
+                    found = true;
+                }
+            } else if (!target.equals(data[position])) {
+                found = contains(target, position + 1);
+            } else {
+                found = true;
+            }
+        }
+        return found;
     }
 
     /**
@@ -73,12 +90,25 @@ public class ArrayList<E> implements List<E>, RandomAccess {
      */
     @Override
     public int indexOf(Object target) {
-        // TODO call recursive
-        return indexOf(target, data[0]);
+        return indexOf(target, 0);
     }
 
-    private int indexOf(Object target, Object value) {
-        return 0;
+    private int indexOf(Object target, int currentIndex) {
+        int index = -1;
+        if (currentIndex < data.length) {
+            if (target == null) {
+                if (!(data[currentIndex] == null)) {
+                    index = 1 + indexOf(target, currentIndex + 1);
+                } else {
+                    index++;
+                } // FIXME
+            } else if (!target.equals(data[currentIndex])) {
+                index = 1 + indexOf(target, currentIndex + 1);
+            } else {
+                index++;
+            }
+        }
+        return index;
     }
 
     @Override
