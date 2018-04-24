@@ -79,8 +79,15 @@ public class LinkedList<E> implements List<E> {
     }
 
     private int size(Node<E> head) {
-        // TODO
-        return 0;
+        int size = 0;
+        if (head != null) {
+            if (head.next != null) {
+                size = 1 + size(head.next);
+            } else {
+                size++;
+            }
+        }
+        return size;
     }
 
     /**
@@ -97,8 +104,15 @@ public class LinkedList<E> implements List<E> {
     }
 
     private boolean contains(Object target, Node<E> head) {
-        // TODO
-        return false;
+        boolean found = false;
+        if (head != null) {
+            if (target == head.value || (target != null && target.equals(head.value))) {
+                found = true;
+            } else {
+                found = contains(target, head.next);
+            }
+        }
+        return found;
     }
 
     /**
@@ -114,12 +128,19 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public int indexOf(Object target) {
-        return indexOf(target, head);
+        return indexOf(target, head, 0);
     }
 
-    private int indexOf(Object target, Node<E> head) {
-        // TODO
-        return 0;
+    private int indexOf(Object target, Node<E> head, int currentIndex) {
+        int index = -1;
+        if (head != null) {
+            if (target == head.value || (target != null && target.equals(head.value))) {
+                index = currentIndex;
+            } else {
+                index = indexOf(target, head.next, currentIndex + 1);
+            }
+        }
+        return index;
     }
 
     /**
@@ -142,8 +163,13 @@ public class LinkedList<E> implements List<E> {
     }
 
     private E get(int index, Node<E> head) {
-        // TODO
-        return null;
+        E value;
+        if (index == 0) {
+            value = head.value;
+        } else {
+            value = get(index - 1, head.next);
+        }
+        return value;
     }
 
     @Override

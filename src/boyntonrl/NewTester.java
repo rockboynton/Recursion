@@ -83,18 +83,23 @@ public class NewTester {
             utilList.add(string);
         }
         List<String> myList = new LinkedList<>(utilList);
+
         description = "LinkedList size";
         sizeTestPassed = sizeTest(myList, utilList);
         test(description, sizeTestPassed);
+
         description = "LinkedList contains";
         containsTestPassed = containsTest(myList, utilList);
         test(description, containsTestPassed);
+
         description = "LinkedList indexOf";
         indexOfTestPassed = indexOfTest(myList, utilList);
         test(description, indexOfTestPassed);
+
         description = "LinkedList get";
         getTestPassed = getTest(myList, utilList);
         test(description, getTestPassed);
+
         return sizeTestPassed && containsTestPassed && indexOfTestPassed && getTestPassed;
     }
 

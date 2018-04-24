@@ -62,16 +62,10 @@ public class ArrayList<E> implements List<E>, RandomAccess {
     private boolean contains(Object target, int position) {
         boolean found = false;
         if (position < data.length) {
-            if (target == null) {
-                if (!(data[position] == null)) {
-                    found = contains(target, position + 1);
-                } else {
-                    found = true;
-                }
-            } else if (!target.equals(data[position])) {
-                found = contains(target, position + 1);
-            } else {
+            if (target == data[position] || (target != null && target.equals(data[position]))) {
                 found = true;
+            } else {
+                found = contains(target, position + 1);
             }
         }
         return found;
@@ -96,16 +90,10 @@ public class ArrayList<E> implements List<E>, RandomAccess {
     private int indexOf(Object target, int currentIndex) {
         int index = -1;
         if (currentIndex < data.length) {
-            if (target == null) {
-                if (!(data[currentIndex] == null)) {
-                    index = 1 + indexOf(target, currentIndex + 1);
-                } else {
-                    index++;
-                } // FIXME
-            } else if (!target.equals(data[currentIndex])) {
-                index = 1 + indexOf(target, currentIndex + 1);
+            if (target == data[currentIndex] || (target != null && target.equals(data[currentIndex]))) {
+                index = currentIndex;
             } else {
-                index++;
+                index = indexOf(target, currentIndex + 1);
             }
         }
         return index;
