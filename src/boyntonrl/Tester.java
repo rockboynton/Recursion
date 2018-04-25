@@ -2,12 +2,11 @@
  * CS2852
  * Spring 2017
  * Lab 6 - Recursion
- * Name: Rock Boynton
+ * Name:
  * Created: 3/30/2017
  */
 package boyntonrl;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,164 +21,150 @@ public class Tester {
     private final static String[] STRINGS3 = {"this", "will", "be"};
     private final static String[] STRINGS4 = {"this", "will", "be", "interesting"};
     private final static String[] STRINGS5 = {"this", null, "will", "be", "interesting"};
-    private final static String[] RANDOM_STRINGS = {"foo", "bar"};
 
     private final static int[] EMPTY_INTS = {};
     private final static int[] INTS1 = {-1};
     private final static int[] INTS2 = {-1, 2};
     private final static int[] INTS3 = {-1, 2, 8};
     private final static int[] INTS4 = {-1, 2, 8, Integer.MAX_VALUE};
-    private final static int[] RANDOM_INTS = {Integer.MIN_VALUE, 13, 7};
 
     /**
      * Calls all of the test methods
      * @param ignored Not used
      */
     public static void main(String[] ignored) {
-        constructorTests();
-
-        containsTests();
-
-        indexOfTests();
-//
-//        sizeTests();
-//
-//        getTests();
-    }
-
-    private static void constructorTests() {
         String description = "ArrayList constructor collection of Strings of size: ";
-        test(description + 0, stringConstructorArrayList(EMPTY_STRINGS));
-        test(description + 1, stringConstructorArrayList(STRINGS1));
-        test(description + 2, stringConstructorArrayList(STRINGS2));
-        test(description + 3, stringConstructorArrayList(STRINGS3));
-        test(description + 4, stringConstructorArrayList(STRINGS4));
-        test(description + 5, stringConstructorArrayList(STRINGS5));
+        test(description + 0, stringConstructor(EMPTY_STRINGS));
+        test(description + 1, stringConstructor(STRINGS1));
+        test(description + 2, stringConstructor(STRINGS2));
+        test(description + 3, stringConstructor(STRINGS3));
+        test(description + 4, stringConstructor(STRINGS4));
+        test(description + 5, stringConstructor(STRINGS5));
 
         description = "ArrayList constructor collection of Integers of size: ";
-        test(description + 0, intConstructorArrayList(EMPTY_INTS));
-        test(description + 1, intConstructorArrayList(INTS1));
-        test(description + 2, intConstructorArrayList(INTS2));
-        test(description + 3, intConstructorArrayList(INTS3));
-        test(description + 4, intConstructorArrayList(INTS4));
+        test(description + 0, intConstructor(EMPTY_INTS));
+        test(description + 1, intConstructor(INTS1));
+        test(description + 2, intConstructor(INTS2));
+        test(description + 3, intConstructor(INTS3));
+        test(description + 4, intConstructor(INTS4));
 
-        description = "LinkedList constructor collection of Strings of size: ";
-        test(description + 0, stringConstructorLinkedList(EMPTY_STRINGS));
-        test(description + 1, stringConstructorLinkedList(STRINGS1));
-        test(description + 2, stringConstructorLinkedList(STRINGS2));
-        test(description + 3, stringConstructorLinkedList(STRINGS3));
-        test(description + 4, stringConstructorLinkedList(STRINGS4));
-        test(description + 5, stringConstructorLinkedList(STRINGS5));
-
-        description = "LinkedList constructor collection of Integers of size: ";
-        test(description + 0, intConstructorLinkedList(EMPTY_INTS));
-        test(description + 1, intConstructorLinkedList(INTS1));
-        test(description + 2, intConstructorLinkedList(INTS2));
-        test(description + 3, intConstructorLinkedList(INTS3));
-        test(description + 4, intConstructorLinkedList(INTS4));
+        // use & instead of && to prevent short circuit... run all tests
+        if (arrayListTests() & linkedListTests()) {
+            System.out.println("All tests passed.");
+        }
     }
 
-    private static void containsTests() {
+    /**
+     * Tests the contains() and indexOf() methods of the ArrayList class
+     * @return true if all the tests passed
+     */
+    private static boolean arrayListTests() {
         String description;
-        description = "ArrayList contains collection of String of size: ";
-        test(description + 0, arrayListContains(EMPTY_STRINGS));
-        test(description + 1, arrayListContains(STRINGS1));
-        test(description + 2, arrayListContains(STRINGS2));
-        test(description + 3, arrayListContains(STRINGS3));
-        test(description + 4, arrayListContains(STRINGS4));
-        test(description + 5, arrayListContains(STRINGS5));
-
-        description = "ArrayList contains collection of Integers of size: ";
-        test(description + 0, arrayListContains(EMPTY_INTS));
-        test(description + 1, arrayListContains(INTS1));
-        test(description + 2, arrayListContains(INTS2));
-        test(description + 3, arrayListContains(INTS3));
-        test(description + 4, arrayListContains(INTS4));
-
-        description = "LinkedList contains collection of String of size: ";
-        test(description + 0, linkedListContains(EMPTY_STRINGS));
-        test(description + 1, linkedListContains(STRINGS1));
-        test(description + 2, linkedListContains(STRINGS2));
-        test(description + 3, linkedListContains(STRINGS3));
-        test(description + 4, linkedListContains(STRINGS4));
-        test(description + 5, linkedListContains(STRINGS5));
-
-        description = "LinkedList contains collection of String of size: ";
-        test(description + 0, linkedListContains(EMPTY_INTS));
-        test(description + 1, linkedListContains(INTS1));
-        test(description + 2, linkedListContains(INTS2));
-        test(description + 3, linkedListContains(INTS3));
-        test(description + 4, linkedListContains(INTS4));
+        boolean containsTestPassed;
+        boolean indexOfTestPassed;
+        List<String> utilList = new java.util.ArrayList<>();
+        for(String string : STRINGS5) {
+            utilList.add(string);
+        }
+        List<String> myList = new ArrayList<>(utilList);
+        description = "ArrayList contains";
+        containsTestPassed = containsTest(myList, utilList);
+        test(description, containsTestPassed);
+        description = "ArrayList indexOf";
+        indexOfTestPassed = indexOfTest(myList, utilList);
+        test(description, indexOfTestPassed);
+        return containsTestPassed && indexOfTestPassed;
     }
 
-    private static void indexOfTests() {
+    /**
+     * Tests the size(), contains(), indexOf(), and get() methods of the LinkedList class
+     * @return true if all the tests passed
+     */
+    private static boolean linkedListTests() {
         String description;
-        description = "ArrayList indexOf collection of String of size: ";
-        test(description + 0, arrayListIndexOf(EMPTY_STRINGS));
-        test(description + 1, arrayListIndexOf(STRINGS1));
-        test(description + 2, arrayListIndexOf(STRINGS2));
-        test(description + 3, arrayListIndexOf(STRINGS3));
-        test(description + 4, arrayListIndexOf(STRINGS4));
-        test(description + 5, arrayListIndexOf(STRINGS5));
+        boolean sizeTestPassed;
+        boolean containsTestPassed;
+        boolean indexOfTestPassed;
+        boolean getTestPassed;
+        List<String> utilList = new java.util.LinkedList<>();
+        for(String string : STRINGS5) {
+            utilList.add(string);
+        }
+        List<String> myList = new LinkedList<>(utilList);
 
-        description = "ArrayList indexOf collection of Integers of size: ";
-        test(description + 0, arrayListIndexOf(EMPTY_INTS));
-        test(description + 1, arrayListIndexOf(INTS1));
-        test(description + 2, arrayListIndexOf(INTS2));
-        test(description + 3, arrayListIndexOf(INTS3));
-        test(description + 4, arrayListIndexOf(INTS4));
+        description = "LinkedList size";
+        sizeTestPassed = sizeTest(myList, utilList);
+        test(description, sizeTestPassed);
 
-        description = "LinkedList indexOf collection of String of size: ";
-        test(description + 0, linkedListIndexOf(EMPTY_STRINGS));
-        test(description + 1, linkedListIndexOf(STRINGS1));
-        test(description + 2, linkedListIndexOf(STRINGS2));
-        test(description + 3, linkedListIndexOf(STRINGS3));
-        test(description + 4, linkedListIndexOf(STRINGS4));
-        test(description + 5, linkedListIndexOf(STRINGS5));
+        description = "LinkedList contains";
+        containsTestPassed = containsTest(myList, utilList);
+        test(description, containsTestPassed);
 
-        description = "LinkedList indexOf collection of String of size: ";
-        test(description + 0, linkedListIndexOf(EMPTY_INTS));
-        test(description + 1, linkedListIndexOf(INTS1));
-        test(description + 2, linkedListIndexOf(INTS2));
-        test(description + 3, linkedListIndexOf(INTS3));
-        test(description + 4, linkedListIndexOf(INTS4));
+        description = "LinkedList indexOf";
+        indexOfTestPassed = indexOfTest(myList, utilList);
+        test(description, indexOfTestPassed);
+
+        description = "LinkedList get";
+        getTestPassed = getTest(myList, utilList);
+        test(description, getTestPassed);
+
+        return sizeTestPassed && containsTestPassed && indexOfTestPassed && getTestPassed;
     }
 
-//    private static void sizeTests() {
-//        String description;
-//        description = "LinkedList size collection of String of size: ";
-//        test(description + 0, linkedListSize(EMPTY_STRINGS));
-//        test(description + 1, linkedListSize(STRINGS1));
-//        test(description + 2, linkedListSize(STRINGS2));
-//        test(description + 3, linkedListSize(STRINGS3));
-//        test(description + 4, linkedListSize(STRINGS4));
-//        test(description + 5, linkedListSize(STRINGS5));
-//
-//        description = "LinkedList size collection of String of size: ";
-//        test(description + 0, linkedListSize(EMPTY_INTS));
-//        test(description + 1, linkedListSize(INTS1));
-//        test(description + 2, linkedListSize(INTS2));
-//        test(description + 3, linkedListSize(INTS3));
-//        test(description + 4, linkedListSize(INTS4));
-//    }
+    /**
+     * Tests the contains method of a list
+     * @param myList custom list
+     * @param utilList a java.util list that is expected to be equivalent to myList
+     * @return true if the contains method returns the same for both lists
+     */
+    private static boolean containsTest(List<String> myList, Collection<String> utilList) {
+        return myList.contains("not found") == utilList.contains("not found") &&
+                myList.contains(STRINGS5[0]) == utilList.contains(STRINGS5[0]) &&
+                myList.contains(null) == utilList.contains(null) &&
+                myList.contains(STRINGS5[STRINGS5.length - 1]) == utilList.contains
+                        (STRINGS5[STRINGS5.length - 1]) && myList.contains(3) == utilList.contains(3);
+    }
 
-//    private static void getTests() {
-//        String description;
-//        description = "LinkedList get collection of String of size: ";
-//        test(description + 0, linkedListGet(EMPTY_STRINGS));
-//        test(description + 1, linkedListGet(STRINGS1));
-//        test(description + 2, linkedListGet(STRINGS2));
-//        test(description + 3, linkedListGet(STRINGS3));
-//        test(description + 4, linkedListGet(STRINGS4));
-//        test(description + 5, linkedListGet(STRINGS5));
-//
-//        description = "LinkedList get collection of String of size: ";
-//        test(description + 0, linkedListGet(EMPTY_INTS));
-//        test(description + 1, linkedListGet(INTS1));
-//        test(description + 2, linkedListGet(INTS2));
-//        test(description + 3, linkedListGet(INTS3));
-//        test(description + 4, linkedListGet(INTS4));
-//    }
+    /**
+     * Tests the indexOf method of a list
+     * @param myList custom list
+     * @param utilList a java.util list that is expected to be equivalent to myList
+     * @return true if the indexOf method returns the same for both lists
+     */
+    private static boolean indexOfTest(List<String> myList, List<String> utilList) {
+        return myList.indexOf("not found") == utilList.indexOf("not found") &&
+                myList.indexOf(STRINGS5[0]) == utilList.indexOf(STRINGS5[0]) &&
+                myList.indexOf(null) == utilList.indexOf(null) &&
+                myList.indexOf(STRINGS5[STRINGS5.length - 1]) == utilList.indexOf
+                        (STRINGS5[STRINGS5.length - 1]) && myList.indexOf(3) == utilList.indexOf(3);
+    }
+
+    /**
+     * Tests the size method of a list
+     * @param myList custom list
+     * @param utilList a java.util list that is expected to be equivalent to myList
+     * @return true if the size method returns the same for both lists
+     */
+    private static boolean sizeTest(List<String> myList, List<String> utilList) {
+        return myList.size() == utilList.size();
+    }
+
+    /**
+     * Tests the get method of a list
+     * @param myList custom list
+     * @param utilList a java.util list that is expected to be equivalent to myList
+     * @return true if the get method returns the same for both lists
+     */
+    private static boolean getTest(List<String> myList, List<String> utilList) {
+        boolean passed;
+        try {
+            passed = myList.get(0).equals(utilList.get(0)) &&
+                    myList.get(STRINGS5.length - 1).equals(utilList.get(STRINGS5.length - 1));
+        } catch (Exception e) {
+            passed = false;
+        }
+        return passed;
+    }
 
     /**
      * Displays an error if the test fails
@@ -192,8 +177,6 @@ public class Tester {
         }
     }
 
-    //----------------------------------------------------------------------------------------------
-
     /**
      * Tests the constructor that accepts a collection of elements.
      * After the ArrayList is instantiated, the size is compared with
@@ -201,7 +184,7 @@ public class Tester {
      * @param strings An array of Strings to be added to the ArrayList
      * @return true if test passed
      */
-    private static boolean stringConstructorArrayList(String[] strings) {
+    private static boolean stringConstructor(String[] strings) {
         Collection<String> input = new java.util.ArrayList<>();
         for(String string : strings) {
             input.add(string);
@@ -217,179 +200,12 @@ public class Tester {
      * @param numbers An array of ints to be added to the ArrayList
      * @return true if test passed
      */
-    private static boolean intConstructorArrayList(int[] numbers) {
+    private static boolean intConstructor(int[] numbers) {
         Collection<Integer> input = new java.util.ArrayList<>();
         for(int number : numbers) {
             input.add(number);
         }
         List<Integer> list = new ArrayList<>(input);
         return list.size()==input.size();
-    }
-
-    /**
-     * Tests the constructor that accepts a collection of elements.
-     * After the LinkedList is instantiated, the size is compared with
-     * the size of the collection. Assumes size() method works.
-     * @param strings An array of Strings to be added to the LinkedList
-     * @return true if test passed
-     */
-    private static boolean stringConstructorLinkedList(String[] strings) {
-        Collection<String> input = new java.util.LinkedList<>();
-        for(String string : strings) {
-            input.add(string);
-        }
-        List<String> list = new LinkedList<>(input);
-        return list.size()==input.size();
-    }
-
-    /**
-     * Tests the constructor that accepts a collection of elements.
-     * After the LinkedList is instantiated, the size is compared with
-     * the size of the collection. Assumes size() method works.
-     * @param numbers An array of ints to be added to the LinkedList
-     * @return true if test passed
-     */
-    private static boolean intConstructorLinkedList(int[] numbers) {
-        Collection<Integer> input = new java.util.LinkedList<>();
-        for(int number : numbers) {
-            input.add(number);
-        }
-        List<Integer> list = new LinkedList<>(input);
-        return list.size()==input.size();
-    }
-
-    //----------------------------------------------------------------------------------------------
-
-    /**
-     * Tests if the ArrayList contains() method contains each word in the list and
-     * doesn't contain random stuff not in the list.
-     * Assumes size() and get() work properly.
-     * @param strings string array to construct ArrayList
-     * @return true if the test passed, false if it failed
-     */
-    private static boolean arrayListContains(String[] strings) {
-        Collection<String> util = new java.util.ArrayList<>(Arrays.asList(strings));
-        List<String> myList = new ArrayList<>(util);
-        return containsStringPassed(myList);
-    }
-
-    /**
-     * Tests if the ArrayList contains() method contains each word in the list and
-     * doesn't contain random stuff not in the list.
-     * Assumes size() and get() work properly.
-     * @param numbers int array to construct ArrayList
-     * @return true if the test passed, false if it failed
-     */
-    private static boolean arrayListContains(int[] numbers) {
-        Collection<Integer> util = new java.util.ArrayList<>();
-        for (int num : numbers) {
-            util.add(num);
-        }
-        List<Integer> myList = new ArrayList<>(util);
-        return containsIntPassed(myList);
-    }
-
-    /**
-     * Tests if the LinkedList contains() method contains each word in the list and
-     * doesn't contain random stuff not in the list.
-     * Assumes size() and get() work properly.
-     * @param strings string array to construct ArrayList
-     * @return true if the test passed, false if it failed
-     */
-    private static boolean linkedListContains(String[] strings) {
-        Collection<String> util = new java.util.LinkedList<>(Arrays.asList(strings));
-        List<String> myList = new LinkedList<>(util);
-        return containsStringPassed(myList);
-    }
-
-    /**
-     * Tests if the LinkedList contains() method contains each word in the list and
-     * doesn't contain random stuff not in the list.
-     * Assumes size() and get() work properly.
-     * @param numbers int array to construct ArrayList
-     * @return true if the test passed, false if it failed
-     */
-    private static boolean linkedListContains(int[] numbers) {
-        Collection<Integer> util = new java.util.LinkedList<>();
-        for (int num : numbers) {
-            util.add(num);
-        }
-        List<Integer> myList = new LinkedList<>(util);
-        return containsIntPassed(myList);
-    }
-
-
-    private static boolean containsStringPassed(List<String> myList) {
-        boolean passed = true;
-        for (int i = 0; i < myList.size() && passed; i++) {
-            if (!myList.contains(myList.get(i))) {
-                passed = false;
-            }
-        }
-        for (String randomString : RANDOM_STRINGS) {
-            if (myList.contains(randomString)) {
-                passed = false;
-            }
-        }
-        return passed;
-    }
-
-    private static boolean containsIntPassed(List<Integer> myList) {
-        boolean passed = true;
-        for (int i = 0; i < myList.size() && passed; i++) {
-            if (!myList.contains(myList.get(i))) {
-                passed = false;
-            }
-        }
-        for (int randomInt : RANDOM_INTS) {
-            if (myList.contains(randomInt)) {
-                passed = false;
-            }
-        }
-        return passed;
-    }
-
-    //----------------------------------------------------------------------------------------------
-
-    private static boolean arrayListIndexOf(String[] strings) {
-        Collection<String> util = new java.util.ArrayList<>(Arrays.asList(strings));
-        List<String> myList = new ArrayList<>(util);
-        return indexOfStringPassed(myList);
-    }
-
-    private static boolean arrayListIndexOf(int[] numbers) {
-        Collection<Integer> util = new java.util.ArrayList<>();
-        for (int num : numbers) {
-            util.add(num);
-        }
-        List<Integer> myList = new ArrayList<>(util);
-        return indexOfIntPassed(myList);
-    }
-
-    private static boolean linkedListIndexOf(String[] strings) {
-        Collection<String> util = new java.util.LinkedList<>(Arrays.asList(strings));
-        List<String> myList = new LinkedList<>(util);
-        return indexOfStringPassed(myList);
-    }
-
-    private static boolean linkedListIndexOf(int[] numbers) {
-        Collection<Integer> util = new java.util.LinkedList<>();
-        for (int num : numbers) {
-            util.add(num);
-        }
-        List<Integer> myList = new LinkedList<>(util);
-        return indexOfIntPassed(myList);
-    }
-
-    private static boolean indexOfStringPassed(List<String> myList) {
-        return false;
-    }
-
-    private static boolean indexOfIntPassed(List<Integer> myList) {
-        return false;
-    }
-
-    private static boolean assertEquals(int value1, int value2) {
-        return value1 == value2;
     }
 }
