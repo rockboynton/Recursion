@@ -2,7 +2,7 @@
  * CS2852
  * Spring 2017
  * Lab 6 - Recursion
- * Name:
+ * Name: Rock Boynton
  * Created: 3/30/2017
  */
 package boyntonrl;
