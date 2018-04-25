@@ -109,6 +109,11 @@ public class ArrayList<E> implements List<E>, RandomAccess {
         throw new UnsupportedOperationException("Not implemented");
     }
 
+    /**
+     * Returns the element at the specified index
+     * @param index of the desired element
+     * @return element at specified index
+     */
     @Override
     public E get(int index) {
         return (E) data[index];
